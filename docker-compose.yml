@@ -72,14 +72,6 @@ services:
     ports:
       - '${TYPEORM_PORT}:${TYPEORM_PORT}'
 
-  redis:
-    container_name: redis
-    image: 'bitnami/redis:latest'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-    networks:
-      - webnet
-
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
