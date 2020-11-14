@@ -13,6 +13,7 @@ services:
       - ./frontend/:/usr/src/app
       - /usr/src/app/node_modules
     env_file:
+      - .env.local
       - .env
     networks:
       - webnet
@@ -32,6 +33,7 @@ services:
       - '9229:9229'
     command: npm run start:dev
     env_file:
+      - .env.local
       - .env
     networks:
       - webnet
@@ -53,6 +55,7 @@ services:
     networks:
       - webnet
     env_file:
+      - .env.local
       - .env
 
   postgresdb:
