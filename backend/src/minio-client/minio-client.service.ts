@@ -11,7 +11,7 @@ export class MinioClientService {
     private readonly baseBucket = config.MINIO_BUCKET
 
   public get client(): any {
-    return this.minio.client;
+    return this.minio.client
   }
 
   constructor(
@@ -21,8 +21,11 @@ export class MinioClientService {
   }
 
   public async upload(file: BufferedFile, baseBucket: string = this.baseBucket): Promise<minioRO>  {
-    if(!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {
-      throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
+    if(!(file.mimetype.includes('jpeg') 
+    || file.mimetype.includes('png') 
+    || file.mimetype.includes('mp4') 
+    || file.mimetype.includes('mp3'))) {
+      throw new HttpException('Error uploading file, wrong ext', HttpStatus.BAD_REQUEST)
     }
     const temp_filename = Date.now().toString()
     const hashedFileName = crypto.createHash('md5').update(temp_filename).digest("hex");
@@ -33,8 +36,8 @@ export class MinioClientService {
     const filename = hashedFileName + ext
     const fileName = `${filename}`;
     const fileBuffer = file.buffer;
-    this.client.putObject(baseBucket,fileName,fileBuffer,metaData, function(err) {
-      if(err) throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
+    this.client.putObject(baseBucket, fileName, fileBuffer, metaData, function(err) {
+      if(err) throw new HttpException(`Error uploading file, cant put; ${err}`, HttpStatus.BAD_REQUEST)
     })
 
     return {
