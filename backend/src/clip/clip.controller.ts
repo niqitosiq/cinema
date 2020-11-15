@@ -12,7 +12,6 @@ export class ClipController {
 
     @Post()
     async create(@Body() createClipDto: CreateClipDto): Promise<Clip> {
-        console.log(createClipDto)
         return await this.clipService.create(createClipDto)
     }
 
