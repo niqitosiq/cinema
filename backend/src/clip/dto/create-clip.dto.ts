@@ -7,7 +7,7 @@ export class CreateClipDto {
 
     readonly likeCounter: number = 0;
 
-    readonly viewCounyer: number = 0;
+    readonly viewCounter: number = 0;
 
     readonly desc?: string; 
 }
