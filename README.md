@@ -1,4 +1,4 @@
-# Volsu-schedule
+# CinemaHack
 
 Для развертки проекта:
 `docker-compose up --build -V`
