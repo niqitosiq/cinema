@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Clip } from "src/clip/entities/clip.entity";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { choiceEnum } from "../enum/choice.enum";
 import { choiceJSON } from "../interfaces/choice.interface";
 
@@ -18,4 +19,7 @@ export class Choice {
 
     @Column('enum', {'enum': choiceEnum})
     type: choiceEnum
+
+    @OneToOne(() => Clip)
+    clip: Clip;
 }
