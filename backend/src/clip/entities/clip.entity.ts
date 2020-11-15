@@ -6,6 +6,9 @@ export class Clip {
     id: number;
 
     @Column('varchar')
+    linkedCinema: string;
+
+    @Column('varchar')
     videoUrl: string;
 
     @Column('varchar', { nullable: true })

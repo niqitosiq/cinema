@@ -1,4 +1,6 @@
 export class CreateClipDto {
+    readonly linkedCinema: string;
+
     readonly videoUrl: string;
     
     readonly musicUrl?: string;

@@ -1,4 +1,6 @@
 export class UpdateClipDto {
+    readonly linkedCinema: string;
+    
     readonly videoUrl: string;
     
     readonly musicUrl: string;
