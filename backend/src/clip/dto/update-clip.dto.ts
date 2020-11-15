@@ -7,7 +7,7 @@ export class UpdateClipDto {
 
     readonly likeCounter: number;
 
-    readonly viewCounyer: number;
+    readonly viewCounter: number;
 
     readonly desc: string; 
 }
