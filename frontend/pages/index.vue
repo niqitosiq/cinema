@@ -21,9 +21,12 @@
 export default {
   name: 'index-page',
 
-  async asyncData() {
+  async asyncData({ $api }) {
+    const clips = await $api.stories.clips();
+    console.log(clips);
     return {
       activeStoryIndex: -1,
+      activeStory: null,
       stories: [
         {
           thumb: 'thumbs/1.png',
@@ -60,21 +63,25 @@ export default {
     };
   },
 
-  computed: {
-    activeStory() {
+  watch: {
+    activeStoryIndex() {
       if (this.activeStoryIndex === -1) {
-        return null;
+        this.activeStory = null;
+        return;
       }
 
       if (this.activeStoryIndex >= 0) {
-        return this.stories[this.activeStoryIndex];
+        this.activeStory = this.stories[this.activeStoryIndex];
+        return;
       }
 
       if (this.activeStoryIndex < this.stories.length) {
-        return this.stories[this.activeStoryIndex];
+        this.activeStory = this.stories[this.activeStoryIndex];
+        return;
       }
 
-      return this.stories[0];
+      this.activeStoryIndex = 0;
+      this.activeStory = this.stories[0];
     },
   },
 

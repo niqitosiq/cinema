@@ -20,7 +20,7 @@
           <story-video ref="video" :url="story.url" @ended="$emit('next')" />
         </div>
         <div class="story-wrapper__mask">
-          <component :is="maskComponent" :key="maskMeta" :meta="maskMeta" />
+          <component :is="maskComponent" :key="story.url" :meta="maskMeta" />
         </div>
       </div>
     </transition>

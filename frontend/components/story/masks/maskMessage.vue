@@ -15,7 +15,7 @@ export default {
   computed: {
     metaStyle() {
       return `
-        left: ${this.meta.x}px;
+        left: calc(50% - ${this.meta.x}px);
         bottom: ${this.meta.y}px;
       `;
     },
@@ -36,11 +36,11 @@ export default {
   bottom: 0;
   left: 0;
   color: #000;
-  transform: rotate(10deg) translateY(20px);
+  transform: rotate(10deg) translate(-50%, 20px);
   transition: opacity ease 0.01s, transform ease 0.01s;
   opacity: 0;
   &.active {
-    transform: rotate(5deg) translateY(0px);
+    transform: rotate(5deg) translate(-50%, 0px);
     opacity: 1;
     transition: opacity ease 0.3s 0.2s, transform ease 0.3s 0.2s;
   }

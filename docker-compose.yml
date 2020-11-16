@@ -49,9 +49,9 @@ services:
       - '443:443'
     volumes:
       - ./logs:/var/log/nginx/
-    depends_on:
-      - nest
-      - nuxt
+    # depends_on:
+    #   - nest
+    #   - nuxt
     networks:
       - webnet-cinema
     env_file:
