@@ -3,8 +3,8 @@
     <div class="index-page__stories">
       <story-preview
         v-for="story in stories"
-        :key="story.url"
-        :thumb="story.thumb"
+        :key="story.videoUrl"
+        :thumb="story.previewUrl"
         @open="setActiveStory(story)"
       />
     </div>
@@ -22,44 +22,12 @@ export default {
   name: 'index-page',
 
   async asyncData({ $api }) {
-    const clips = await $api.stories.clips();
-    console.log(clips);
+    const { data: stories } = await $api.stories.clips();
+
     return {
       activeStoryIndex: -1,
       activeStory: null,
-      stories: [
-        {
-          thumb: 'thumbs/1.png',
-          url:
-            'http://s3.cinema-hack.rednite.ru/cinema/3415d79ab87951dd4d60df925b09ea61.mp4',
-          mask: {
-            type: 'message',
-            meta: JSON.stringify({
-              text: 'Когда тебе говорят, что ты красивый',
-              x: 30,
-              y: 200,
-            }),
-          },
-        },
-        {
-          thumb: 'thumbs/1.png',
-          url:
-            'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          mask: {
-            type: 'chooser',
-            meta: JSON.stringify({
-              text: 'Когда тебе говорят, что ты не красивый',
-              options: [
-                { name: 'Викинг' },
-                { name: 'Викинг1' },
-                { name: 'Викинг2' },
-                { name: 'Викинг3' },
-              ],
-              answer: { name: 'Викинг2' },
-            }),
-          },
-        },
-      ],
+      stories,
     };
   },
 

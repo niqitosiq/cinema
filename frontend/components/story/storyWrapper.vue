@@ -17,10 +17,18 @@
         @click.prevent.stop
       >
         <div class="story-wrapper__video">
-          <story-video ref="video" :url="story.url" @ended="$emit('next')" />
+          <story-video
+            ref="video"
+            :url="story.videoUrl"
+            @ended="$emit('next')"
+          />
         </div>
         <div class="story-wrapper__mask">
-          <component :is="maskComponent" :key="story.url" :meta="maskMeta" />
+          <component
+            :is="maskComponent"
+            :key="story.videoUrl"
+            :meta="maskMeta"
+          />
         </div>
       </div>
     </transition>
@@ -72,7 +80,7 @@ export default {
     },
 
     mask() {
-      return this.story.mask;
+      return this.story.mask || { meta: '{}' };
     },
 
     maskMeta() {
@@ -136,7 +144,6 @@ export default {
 
     mousemove(event) {
       if (!this.mouseClamped) {
-        this.mouseup();
         if (event.type !== 'touchmove') return;
       }
 
