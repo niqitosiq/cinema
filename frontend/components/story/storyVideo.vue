@@ -38,6 +38,10 @@ export default {
     video.addEventListener('seeked', () => {
       this.$emit('seeked');
     });
+
+    video.addEventListener('ended', () => {
+      this.$emit('ended');
+    });
   },
 
   methods: {
@@ -62,6 +66,5 @@ export default {
   height: 100%;
   background-color: #000;
   position: relative;
-  transition: transform linear 0.05s, opacity linear 0.05s;
 }
 </style>

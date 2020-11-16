@@ -29,17 +29,33 @@ export default {
           thumb: 'thumbs/1.png',
           url:
             'http://s3.cinema-hack.rednite.ru/cinema/3415d79ab87951dd4d60df925b09ea61.mp4',
+          mask: {
+            type: 'message',
+            meta: JSON.stringify({
+              text: 'Когда тебе говорят, что ты красивый',
+              x: 30,
+              y: 200,
+            }),
+          },
         },
         {
           thumb: 'thumbs/1.png',
           url:
             'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+          mask: {
+            type: 'chooser',
+            meta: JSON.stringify({
+              text: 'Когда тебе говорят, что ты не красивый',
+              options: [
+                { name: 'Викинг' },
+                { name: 'Викинг1' },
+                { name: 'Викинг2' },
+                { name: 'Викинг3' },
+              ],
+              answer: { name: 'Викинг2' },
+            }),
+          },
         },
-        { thumb: 'thumbs/1.png', url: '3.mp4' },
-        { thumb: 'thumbs/1.png', url: '4.mp4' },
-        { thumb: 'thumbs/1.png', url: '5.mp4' },
-        { thumb: 'thumbs/1.png', url: '6.mp4' },
-        { thumb: 'thumbs/1.png', url: '7.mp4' },
       ],
     };
   },

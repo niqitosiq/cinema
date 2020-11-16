@@ -1,7 +1,6 @@
 <template>
   <div
     :class="['story-wrapper', { visible: isStoryActive }]"
-    @click="close"
     @mouseup="mouseup"
     @mousedown="mousedown"
     @mousemove="mousemove"
@@ -9,13 +8,20 @@
     @touchstart="mousedown"
     @touchend="mouseup"
   >
+    <div @click="close">Назад</div>
     <transition name="story">
       <div
         v-if="isStoryActive"
-        class="story-wrapper__video"
+        :style="videoStyle"
+        class="story-wrapper__animation"
         @click.prevent.stop
       >
-        <story-video ref="video" :position="videoStyle" :url="story.url" />
+        <div class="story-wrapper__video">
+          <story-video ref="video" :url="story.url" @ended="$emit('next')" />
+        </div>
+        <div class="story-wrapper__mask">
+          <component :is="maskComponent" :key="maskMeta" :meta="maskMeta" />
+        </div>
       </div>
     </transition>
   </div>
@@ -23,9 +29,17 @@
 
 <script>
 import throttle from 'lodash/throttle';
+/* masks */
+import maskMessage from './masks/maskMessage';
+import maskChooser from './masks/maskChooser';
 
 export default {
   name: 'story-wrapper',
+
+  components: {
+    maskMessage,
+    maskChooser,
+  },
 
   props: {
     story: {
@@ -37,9 +51,9 @@ export default {
   data() {
     return {
       mouseClamped: false,
+      mouseInitialPosition: null,
       videoPosition: {
         x: 0,
-        y: 0,
         progress: 1,
       },
     };
@@ -52,9 +66,24 @@ export default {
 
     videoStyle() {
       return `
-        transform: translate(${this.videoPosition.x}px, ${this.videoPosition.y}px);
+        transform: translate(${this.videoPosition.x}px, 0px);
         opacity: ${this.videoPosition.progress};
       `;
+    },
+
+    mask() {
+      return this.story.mask;
+    },
+
+    maskMeta() {
+      return JSON.parse(this.mask.meta) || {};
+    },
+
+    maskComponent() {
+      return {
+        message: maskMessage,
+        chooser: maskChooser,
+      }[this.mask.type];
     },
   },
 
@@ -80,22 +109,27 @@ export default {
       this.$emit('close');
     },
 
-    mousedown() {
+    mousedown(event) {
       this.mouseClamped = true;
+      this.mouseInitialPosition =
+        event.type === 'touchstart'
+          ? event.changedTouches[0].clientX
+          : event.clientX;
+      console.log(this.mouseInitialPosition);
+      console.log(event);
     },
 
     mouseup() {
       this.mouseClamped = false;
 
-      if (this.videoPosition.x > 50) {
+      if (this.videoPosition.x > 30) {
         this.$emit('prev');
-      } else if (this.videoPosition.x < -50) {
+      } else if (this.videoPosition.x < -30) {
         this.$emit('next');
       }
 
       this.updateVideoPosition({
         x: 0,
-        y: 0,
         progress: 1,
       });
     },
@@ -111,27 +145,22 @@ export default {
           ? event.changedTouches[0].clientX
           : event.clientX;
 
-      const width = this.$el.offsetWidth;
-
       const xPosition = Math.min(
-        Math.max(parseInt((width / 2 - x) * -1), -200),
+        Math.max(parseInt((this.mouseInitialPosition - x) * -1), -200),
         200,
       );
 
-      const yPosition = Math.abs(xPosition);
-      const progress = 1 - yPosition / 200;
+      const progress = 1 - Math.abs(xPosition) / 200;
 
       this.updateVideoPosition({
         x: xPosition,
-        y: yPosition,
         progress,
       });
     },
 
-    updateVideoPosition: throttle(function ({ x, y, progress }) {
+    updateVideoPosition: throttle(function ({ x, progress }) {
       this.videoPosition = {
         x,
-        y,
         progress,
       };
     }, 50),
@@ -147,7 +176,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 1);
   z-index: 20;
   color: #fff;
 
@@ -161,12 +190,21 @@ export default {
   }
 
   &__video {
-    width: 400px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 900px;
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 0%);
+  }
+
+  &__animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform linear 0.05s, opacity linear 0.05s;
   }
 
   .story-enter-active,
