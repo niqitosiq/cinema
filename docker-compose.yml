@@ -5,7 +5,7 @@ services:
     build:
       context: ./frontend/
       target: '${TARGET}'
-    container_name: nuxt-container
+    container_name: nuxt-container-cinema
     restart: always
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
@@ -16,11 +16,11 @@ services:
       - .env.local
       - .env
     networks:
-      - webnet
+      - webnet-cinema
     command: yarn dev
 
   nest:
-    container_name: nest-container
+    container_name: nest-container-cinema
     build:
       context: ./backend/
       target: '${TARGET}'
@@ -36,12 +36,12 @@ services:
       - .env.local
       - .env
     networks:
-      - webnet
+      - webnet-cinema
     depends_on:
       - postgresdb
 
   nginx:
-    container_name: nginx-container
+    container_name: nginx-container-cinema
     build:
       context: ./nginx/
     ports:
@@ -50,16 +50,16 @@ services:
     volumes:
       - ./logs:/var/log/nginx/
     depends_on:
-      - nuxt
       - nest
+      - nuxt
     networks:
-      - webnet
+      - webnet-cinema
     env_file:
       - .env.local
       - .env
 
   postgresdb:
-    container_name: postgres
+    container_name: postgres-cinema
     image: postgres
     restart: always
     environment:
@@ -69,14 +69,14 @@ services:
     volumes:
       - postgres:/data/postgres
     networks:
-      - webnet
+      - webnet-cinema
     env_file:
       - .env
     ports:
       - '${TYPEORM_PORT}:${TYPEORM_PORT}'
 
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin-cinema
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: '${POSTGRES_EMAIL}'
@@ -86,14 +86,14 @@ services:
     ports:
       - '${PGADMIN_PORT:-5050}:80'
     networks:
-      - webnet
+      - webnet-cinema
     env_file:
       - .env
 
 networks:
-  webnet:
+  webnet-cinema:
     driver: bridge
-    name: webnet
+    name: webnet-cinema
 
 volumes:
   postgres:
