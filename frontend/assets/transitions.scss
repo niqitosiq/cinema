@@ -16,13 +16,13 @@
   transform: scaleY(0.8);
 }
 
-.error-enter-active,
-.error-leave-active {
+.fadeBottom-enter-active,
+.fadeBottom-leave-active {
   transition: opacity 0.3s, transform 0.3s;
   transform: translateY(0%);
   opacity: 1;
 }
-.error-enter, .error-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+.fadeBottom-enter, .fadeBottom-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(100%);
 }
