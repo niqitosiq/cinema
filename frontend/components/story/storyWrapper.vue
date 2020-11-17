@@ -24,7 +24,13 @@
           />
         </div>
         <div class="story-wrapper__mask">
-          <component :is="maskComponent" :key="story.id" :meta="maskMeta" />
+          <component
+            :is="maskComponent"
+            :key="story.id"
+            :meta="maskMeta"
+            @maskStarted="maskStarted"
+            @maskEnded="play"
+          />
         </div>
       </div>
     </transition>
@@ -94,23 +100,29 @@ export default {
   watch: {
     story: {
       deep: true,
-      handler() {
+      async handler() {
+        await this.$nextTick();
+
         this.play();
       },
     },
   },
 
   methods: {
-    async play() {
-      if (!this.$refs.video) {
-        await this.$nextTick();
-      }
-
+    play() {
       this.$refs.video.play();
+    },
+
+    pause() {
+      this.$refs.video.pause();
     },
 
     close() {
       this.$emit('close');
+    },
+
+    maskStarted({ timestamp }) {
+      if (timestamp) this.pause();
     },
 
     mousedown(event) {

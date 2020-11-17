@@ -1,6 +1,6 @@
 <template>
   <div class="story-video" :style="position">
-    <video :key="url" ref="video" :src="url" width="100%" height="100%" muted />
+    <video :key="url" ref="video" :src="url" width="100%" height="100%" />
   </div>
 </template>
 
@@ -20,31 +20,43 @@ export default {
     },
   },
 
+  watch: {
+    url() {
+      this.setHandlers();
+    },
+  },
+
   mounted() {
-    const video = this.$refs.video;
-
-    video.addEventListener('playing', () => {
-      this.$emit('playing');
-    });
-
-    video.addEventListener('pause', () => {
-      this.$emit('pause');
-    });
-
-    video.addEventListener('seeking', () => {
-      this.$emit('seeking');
-    });
-
-    video.addEventListener('seeked', () => {
-      this.$emit('seeked');
-    });
-
-    video.addEventListener('ended', () => {
-      this.$emit('ended');
-    });
+    this.setHandlers();
   },
 
   methods: {
+    async setHandlers() {
+      await this.$nextTick();
+
+      const video = this.$refs.video;
+
+      video.addEventListener('playing', () => {
+        this.$emit('playing');
+      });
+
+      video.addEventListener('pause', () => {
+        this.$emit('pause');
+      });
+
+      video.addEventListener('seeking', () => {
+        this.$emit('seeking');
+      });
+
+      video.addEventListener('seeked', () => {
+        this.$emit('seeked');
+      });
+
+      video.addEventListener('ended', () => {
+        this.$emit('ended');
+      });
+    },
+
     async play() {
       const video = this.$refs.video;
       if (!video) {
@@ -70,7 +82,7 @@ export default {
 .story-video {
   width: 100%;
   height: 100%;
-  background-color: #1e1e1e;
+  background-color: #000;
   position: relative;
 }
 </style>

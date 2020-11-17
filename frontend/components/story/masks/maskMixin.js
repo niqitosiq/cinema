@@ -16,9 +16,11 @@ export default {
     meta: {
       handler() {
         this.active = false;
+        const timing = this.meta.timestamp * 1000 || 300;
         setTimeout(() => {
           this.active = true;
-        }, 300);
+          this.$emit('maskStarted', this.meta);
+        }, timing);
       },
       deep: true,
       immediate: true,

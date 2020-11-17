@@ -63,7 +63,12 @@ export default {
       setTimeout(() => {
         this.answerVisible = true;
         this.questionVisible = false;
+
+        this.$emit('maskEnded');
       }, 200);
+      setTimeout(() => {
+        this.active = false;
+      }, 3000);
     },
   },
 };
@@ -193,6 +198,7 @@ export default {
 
   &__effects {
     position: absolute;
+    top: 0px;
     width: 100%;
     img {
       position: absolute;
@@ -201,14 +207,14 @@ export default {
       &:nth-child(1) {
         transition: opacity ease 0.3s 0.3s, transform ease 0.3s 0.3s;
         left: 0px;
-        bottom: 290px;
+        top: -75px;
         transform: translateY(50px);
         z-index: 18;
       }
       &:nth-child(2) {
         transition: opacity ease 0.5s 0.4s, transform ease 0.5s 0.4s;
         right: 20px;
-        bottom: 270px;
+        top: -130px;
         transform: translateY(50px);
         z-index: 24;
       }
