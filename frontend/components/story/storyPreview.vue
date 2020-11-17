@@ -4,6 +4,9 @@
       <img :src="thumb" alt="" />
     </div>
     <div class="story-preview__circle"></div>
+    <div class="story-preview__description">
+      {{ description }}
+    </div>
   </div>
 </template>
 
@@ -20,6 +23,10 @@ export default {
       type: String,
       default: '',
     },
+    description: {
+      type: String,
+      default: '',
+    },
   },
 };
 </script>
@@ -27,7 +34,9 @@ export default {
 <style lang="scss">
 .story-preview {
   width: 85px;
-  height: 85px;
+  height: calc(93px + 1em);
+  padding-bottom: calc(10px + 1em);
+  padding-top: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,6 +67,13 @@ export default {
     transition: transform ease 0.3s, opacity ease 0.3s 0.1s;
   }
 
+  &__description {
+    position: absolute;
+    bottom: 0px;
+    font-size: 1em;
+    color: #fff;
+  }
+
   &:hover {
     .story-preview {
       &__thumb {
@@ -70,6 +86,7 @@ export default {
       }
     }
   }
+
   & + & {
     margin-left: 10px;
   }

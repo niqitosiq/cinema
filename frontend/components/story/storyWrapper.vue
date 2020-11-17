@@ -8,7 +8,7 @@
     @touchstart="mousedown"
     @touchend="mouseup"
   >
-    <div @click="close">Назад</div>
+    <div class="story-wrapper__back" @click="close">Назад</div>
     <transition name="story">
       <div
         v-if="isStoryActive"
@@ -24,11 +24,7 @@
           />
         </div>
         <div class="story-wrapper__mask">
-          <component
-            :is="maskComponent"
-            :key="story.videoUrl"
-            :meta="maskMeta"
-          />
+          <component :is="maskComponent" :key="story.id" :meta="maskMeta" />
         </div>
       </div>
     </transition>
@@ -84,7 +80,7 @@ export default {
     },
 
     maskMeta() {
-      return JSON.parse(this.mask.meta) || {};
+      return this.mask.meta || {};
     },
 
     maskComponent() {
@@ -123,8 +119,6 @@ export default {
         event.type === 'touchstart'
           ? event.changedTouches[0].clientX
           : event.clientX;
-      console.log(this.mouseInitialPosition);
-      console.log(event);
     },
 
     mouseup() {
@@ -183,7 +177,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 0.9);
   z-index: 20;
   color: #fff;
 
@@ -211,7 +205,20 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: transform linear 0.05s, opacity linear 0.05s;
+    transition: transform linear 0s, opacity linear 0.1s;
+  }
+
+  &__back {
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    transform: translateX(-200px);
+    z-index: 40;
+
+    @media screen and (max-width: 400px) {
+      transform: none;
+      left: 0;
+    }
   }
 
   .story-enter-active,

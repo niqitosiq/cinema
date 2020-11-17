@@ -46,15 +46,21 @@ export default {
 
   methods: {
     async play() {
-      await this.$nextTick();
+      const video = this.$refs.video;
+      if (!video) {
+        await this.$nextTick();
+      }
 
-      this.$refs.video.play();
+      video.play();
     },
 
     async pause() {
-      await this.$nextTick();
+      const video = this.$refs.video;
+      if (!video) {
+        await this.$nextTick();
+      }
 
-      this.$refs.video.pause();
+      video.pause();
     },
   },
 };
@@ -64,7 +70,7 @@ export default {
 .story-video {
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: #1e1e1e;
   position: relative;
 }
 </style>

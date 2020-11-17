@@ -1,9 +1,8 @@
 <template>
-  <div :class="['mask-chooser', { active }]">
+  <div :class="['mask-chooser', { active, answerVisible }]">
     <div :class="['mask-chooser__question', { active: questionVisible }]">
-      <div class="mask-chooser__text">
-        {{ meta.text }}
-      </div>
+      <div class="mask-chooser__text" v-html="meta.text"></div>
+      <div class="mask-chooser__description" v-html="meta.description"></div>
 
       <div class="mask-chooser__options">
         <div
@@ -19,8 +18,14 @@
         </div>
       </div>
     </div>
+
     <div :class="['mask-chooser__answer', { active: answerVisible }]">
-      {{ answerText }}
+      <span v-html="answerText" />
+    </div>
+
+    <div :class="['mask-chooser__effects', { active: answerVisible }]">
+      <img src="/emoji/backsuccess.png" alt="" />
+      <img src="/emoji/frontsuccess.png" alt="" />
     </div>
   </div>
 </template>
@@ -70,35 +75,50 @@ export default {
   z-index: 20;
   bottom: 0px;
   left: 50%;
-  width: 300px;
+  max-width: 350px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 26px 20px 20px;
+  max-height: 100%;
 
   transform: translate(-50%, 20px);
-  transition: opacity ease 0.01s, transform ease 0.01s;
+  transition: opacity ease 0.01s, transform ease 0.01s, max-height ease 0.4s;
   opacity: 0;
 
   &.active {
     transform: translate(-50%, -40px);
     opacity: 1;
-    transition: opacity ease 0.3s 0.2s, transform ease 0.3s 0.2s;
+    transition: opacity ease 0.3s 0.2s, transform ease 0.3s 0.2s,
+      max-height ease 0.4s;
+  }
+
+  &.answerVisible {
+    max-height: 200px;
   }
 
   &__text,
-  &__option {
-    background-color: #fff;
-    border-radius: 5px;
-    color: #000;
+  &__option,
+  &__description {
+    color: #1e1e1e;
     margin-bottom: 8px;
-    padding: 10px 20px;
   }
 
   &__text {
     font-size: 24px;
   }
 
+  &__description {
+    font-size: 16px;
+  }
+
   &__option {
-    font-size: 20px;
+    font-size: 16px;
     display: flex;
     align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    border-radius: 50px;
   }
 
   &__radio {
@@ -131,28 +151,73 @@ export default {
     transform: translate(0%, 20px);
     transition: opacity ease 0.3s, transform ease 0.3s;
     opacity: 0;
+    pointer-events: none;
+    z-index: 25;
+    position: relative;
 
     &.active {
       transform: translate(0%, -0px);
       opacity: 1;
+      pointer-events: auto;
     }
   }
 
   &__answer {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     bottom: 0;
     width: 100%;
+    left: 0px;
+    max-width: 350px;
+    height: 200px;
+    color: #1e1e1e;
+    pointer-events: none;
+    z-index: 20;
     background-color: #fff;
     border-radius: 5px;
-    color: #000;
-    padding: 10px 20px;
-    transition: opacity ease 0.3s 0.3s, transform ease 0.3s 0.3s;
-    transform: translate(0%, 20px);
-    opacity: 0;
-
-    &.active {
+    span {
+      font-size: 20px;
+      transition: opacity ease 0.3s 0.3s, transform ease 0.3s 0.3s;
+      transform: translate(0%, 20px);
+      opacity: 0;
+    }
+    &.active span {
       transform: translate(0%, 0px);
       opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__effects {
+    position: absolute;
+    width: 100%;
+    img {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      &:nth-child(1) {
+        transition: opacity ease 0.3s 0.3s, transform ease 0.3s 0.3s;
+        left: 0px;
+        bottom: 290px;
+        transform: translateY(50px);
+        z-index: 18;
+      }
+      &:nth-child(2) {
+        transition: opacity ease 0.5s 0.4s, transform ease 0.5s 0.4s;
+        right: 20px;
+        bottom: 270px;
+        transform: translateY(50px);
+        z-index: 24;
+      }
+    }
+    &.active {
+      img {
+        transform: translateY(0px);
+        opacity: 1;
+      }
     }
   }
 }

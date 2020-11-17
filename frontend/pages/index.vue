@@ -1,10 +1,12 @@
 <template>
   <div class="index-page container">
+    <h3>Истории с фильмами</h3>
     <div class="index-page__stories">
       <story-preview
         v-for="story in stories"
-        :key="story.videoUrl"
+        :key="story.id"
         :thumb="story.previewUrl"
+        :description="story.desc"
         @open="setActiveStory(story)"
       />
     </div>
@@ -33,11 +35,6 @@ export default {
 
   watch: {
     activeStoryIndex() {
-      if (this.activeStoryIndex === -1) {
-        this.activeStory = null;
-        return;
-      }
-
       if (this.activeStoryIndex >= 0) {
         this.activeStory = this.stories[this.activeStoryIndex];
         return;
@@ -48,14 +45,14 @@ export default {
         return;
       }
 
-      this.activeStoryIndex = 0;
-      this.activeStory = this.stories[0];
+      this.activeStoryIndex = -1;
+      this.activeStory = null;
     },
   },
 
   methods: {
     setActiveStory(story) {
-      const activeStoryIndex = this.stories.findIndex(s => s.url === story.url);
+      const activeStoryIndex = this.stories.findIndex(s => s.id === story.id);
 
       this.activeStoryIndex = activeStoryIndex;
     },
@@ -77,9 +74,21 @@ export default {
 
 <style lang="scss">
 .index-page {
+  h3 {
+    color: #fff;
+    font-size: 28px;
+  }
+
   &__stories {
     display: flex;
     overflow: auto;
+    font-size: 12px;
+  }
+
+  &.container {
+    @media screen and (max-width: 720px) {
+      padding: 20px 10px;
+    }
   }
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-  <div :class="['mask-message', { active }]" :style="metaStyle">
-    {{ meta.text }}
-  </div>
+  <div
+    :class="['mask-message', { active }]"
+    :style="metaStyle"
+    v-html="meta.text"
+  ></div>
 </template>
 
 <script>
@@ -35,7 +37,7 @@ export default {
   width: 100%;
   bottom: 0;
   left: 0;
-  color: #000;
+  color: #1e1e1e;
   transform: rotate(10deg) translate(-50%, 20px);
   transition: opacity ease 0.01s, transform ease 0.01s;
   opacity: 0;
