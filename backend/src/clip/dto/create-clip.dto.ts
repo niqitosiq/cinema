@@ -1,3 +1,5 @@
+import { maskType } from "../interfaces/mask.interface";
+
 export class CreateClipDto {
     readonly linkedCinema: string;
 
@@ -12,4 +14,6 @@ export class CreateClipDto {
     readonly viewCounter: number = 0;
 
     readonly desc?: string; 
+
+    readonly mask?: maskType;
 }

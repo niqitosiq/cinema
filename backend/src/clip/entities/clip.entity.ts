@@ -1,5 +1,5 @@
-import { Choice } from "src/interactive/entities/choice.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { maskType } from "../interfaces/mask.interface";
 
 @Entity({name: 'clip'})
 export class Clip {
@@ -27,7 +27,6 @@ export class Clip {
     @Column('varchar', { nullable: true })
     desc: string;
 
-    @OneToOne(() => Choice, { nullable: true })
-    @JoinColumn()
-    choice: Choice;
+    @Column('simple-json', { nullable: true })
+    mask: maskType;
 }
