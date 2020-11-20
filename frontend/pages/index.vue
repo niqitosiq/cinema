@@ -12,6 +12,7 @@
     </div>
     <story-wrapper
       :story="activeStory"
+      :stories="stories"
       @close="closeStory"
       @next="nextStory"
       @prev="prevStory"

@@ -8,7 +8,12 @@
     @touchstart="mousedown"
     @touchend="mouseup"
   >
-    <div class="story-wrapper__back" @click="close">Назад</div>
+    <div class="story-wrapper__back" @click="close">&lt; Назад</div>
+
+    <div class="story-wrapper__pagination">
+      <ui-pagination :stories="stories" :active="story" />
+    </div>
+
     <transition name="story">
       <div
         v-if="isStoryActive"
@@ -75,6 +80,11 @@ export default {
     story: {
       type: Object,
       default: null,
+    },
+
+    stories: {
+      type: Array,
+      default: () => [],
     },
   },
 
@@ -306,6 +316,14 @@ export default {
     & + & {
       margin-left: 33px;
     }
+  }
+
+  &__pagination {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    z-index: 40;
   }
 
   .story-enter-active,
