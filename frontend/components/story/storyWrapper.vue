@@ -23,6 +23,7 @@
             @ended="$emit('next')"
           />
         </div>
+
         <div class="story-wrapper__mask">
           <component
             :is="maskComponent"
@@ -31,6 +32,25 @@
             @maskStarted="maskStarted"
             @maskEnded="play"
           />
+        </div>
+
+        <div class="story-wrapper__nav">
+          <ui-button type="primary" @click="openCinema(story.linkedCinema)">
+            Открыть фильм
+          </ui-button>
+
+          <div class="story-wrapper__icons">
+            <div
+              v-for="nav in navigation"
+              :key="nav.icon"
+              class="story-wrapper__icon"
+            >
+              <svg-icon :name="nav.icon" />
+              <div class="story-wrapper__icon-counter">
+                {{ story[nav.path] }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </transition>
@@ -66,6 +86,11 @@ export default {
         x: 0,
         progress: 1,
       },
+      navigation: [
+        { icon: 'like', path: 'likeCounter' },
+        { icon: 'share', path: 'viewCounter' },
+        { icon: 'star', path: 'viewCounter' },
+      ],
     };
   },
 
@@ -76,7 +101,7 @@ export default {
 
     videoStyle() {
       return `
-        transform: translate(${this.videoPosition.x}px, 0px);
+        transform: translate(calc(-50% + ${this.videoPosition.x}px), 0px);
         opacity: ${this.videoPosition.progress};
       `;
     },
@@ -177,6 +202,10 @@ export default {
         progress,
       };
     }, 50),
+
+    openCinema(link) {
+      window.open(link, '_blank');
+    },
   },
 };
 </script>
@@ -217,6 +246,11 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
+    max-width: 400px;
+    max-height: 900px;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0%);
     transition: transform linear 0s, opacity linear 0.1s;
   }
 
@@ -230,6 +264,47 @@ export default {
     @media screen and (max-width: 400px) {
       transform: none;
       left: 0;
+    }
+  }
+
+  &__nav {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      width: 100%;
+      text-align: center;
+    }
+
+    .ui-button {
+      width: calc(100% - 50px);
+    }
+  }
+
+  &__icons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  &__icon {
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    &-counter {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    & + & {
+      margin-left: 33px;
     }
   }
 

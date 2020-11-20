@@ -78,7 +78,7 @@ export default {
 .mask-chooser {
   position: absolute;
   z-index: 20;
-  bottom: 0px;
+  bottom: 100px;
   left: 50%;
   max-width: 350px;
   width: 100%;
@@ -87,11 +87,13 @@ export default {
   padding: 26px 20px 20px;
   max-height: 100%;
 
+  pointer-events: none;
   transform: translate(-50%, 20px);
   transition: opacity ease 0.01s, transform ease 0.01s, max-height ease 0.4s;
   opacity: 0;
 
   &.active {
+    pointer-events: auto;
     transform: translate(-50%, -40px);
     opacity: 1;
     transition: opacity ease 0.3s 0.2s, transform ease 0.3s 0.2s,

@@ -38,9 +38,11 @@ export default {
   bottom: 0;
   left: 0;
   color: #1e1e1e;
+
   transform: rotate(10deg) translate(-50%, 20px);
   transition: opacity ease 0.01s, transform ease 0.01s;
   opacity: 0;
+
   &.active {
     transform: rotate(5deg) translate(-50%, 0px);
     opacity: 1;
